@@ -349,7 +349,7 @@ module.exports = function(grunt) {
 			            contentPWA.icons = [];
 		            }
 
-		            ['48', '72', '96', '128', '144', '192', '256'].forEach(function(size) {
+		            ['48', '72', '96', '128', '144', '192', '256', '512'].forEach(function(size) {
 			            var dimensions = size + 'x' + size;
 			            var fifname = "pwa-icon-" + dimensions + ".png";
 			            grunt.log.write(fifname + '... ');
