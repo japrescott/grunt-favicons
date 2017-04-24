@@ -371,7 +371,7 @@ module.exports = function(grunt) {
 			            contentPWA.icons = [];
 		            }
 
-		            ['48', '72', '96', '128', '144', '192', '256'].forEach(function(size) {
+		            ['48', '72', '96', '128', '144', '192', '256', '512'].forEach(function(size) {
 			            var dimensions = size + 'x' + size;
 			            var fifname = "pwa-icon-" + dimensions + ".png";
 			            grunt.log.write(fifname + '... ');
@@ -477,11 +477,11 @@ module.exports = function(grunt) {
 
                     // iOS
                     if (options.apple) {
-                        elements += options.indent + "<link rel=\"apple-touch-icon-precomposed\" sizes=\"152x152\" href=\"" + options.HTMLPrefix + "apple-touch-icon-152x152-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
-                        elements += options.indent + "<link rel=\"apple-touch-icon-precomposed\" sizes=\"120x120\" href=\"" + options.HTMLPrefix + "apple-touch-icon-120x120-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
+                        elements += options.indent + "<link rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"" + options.HTMLPrefix + "apple-touch-icon-152x152-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
+                        elements += options.indent + "<link rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"" + options.HTMLPrefix + "apple-touch-icon-120x120-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
 
-                        elements += options.indent + "<link rel=\"apple-touch-icon-precomposed\" sizes=\"76x76\" href=\"" + options.HTMLPrefix + "apple-touch-icon-76x76-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
-                        elements += options.indent + "<link rel=\"apple-touch-icon-precomposed\" sizes=\"60x60\" href=\"" + options.HTMLPrefix + "apple-touch-icon-60x60-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
+                        elements += options.indent + "<link rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"" + options.HTMLPrefix + "apple-touch-icon-76x76-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
+                        elements += options.indent + "<link rel=\"apple-touch-icon\" sizes=\"60x60\" href=\"" + options.HTMLPrefix + "apple-touch-icon-60x60-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
 
                         elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"144x144\" href=\"" + options.HTMLPrefix + "apple-touch-icon-144x144" + prefix + ".png" + (options.timestamp ? timestamp : '') + "\">\n";
                         elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"114x114\" href=\"" + options.HTMLPrefix + "apple-touch-icon-114x114" + prefix + ".png" + (options.timestamp ? timestamp : '') + "\">\n";
