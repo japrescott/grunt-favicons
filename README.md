@@ -4,7 +4,7 @@ This is a clone of gleeros excellent [grunt-favicons](https://github.com/gleero/
 
 This fork includes multiple improvements;
 - (new) progressive web application (pwa) icon generation & manifest writing
-- (new) iphonePlus support
+- (new) iphone6Plus support (180x180)
 - (fix) prevent multiple mobile-web-app-capable meta tags
 - (fix) svg transparency
 - (fix) indent can be false (defaults to '')
