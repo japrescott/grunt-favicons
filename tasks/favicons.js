@@ -71,7 +71,7 @@ module.exports = function(grunt) {
         var convert = function(args) {
             args.unshift("convert");
             var ret = execute(args.join(" "));
-            if (ret.code === 127 ) {
+            if (ret.status === 127) {
                 return grunt.warn(
                     'You need to have ImageMagick installed in your PATH for this task to work.'
                 );
