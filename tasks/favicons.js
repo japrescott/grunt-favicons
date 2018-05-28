@@ -20,28 +20,38 @@ module.exports = function(grunt) {
         // Default options
         var options = this.options({
             debug: false,
+
             trueColor: false,
             precomposed: true,
-            HTMLPrefix: "",
-            appleTouchBackgroundColor: "auto", // none, auto, #color
-            appleTouchPadding: 15,
-            windowsTile: true,
-            coast: false,
             sharp: 0,
-            tileBlackWhite: true,
-            tileColor: "auto", // none, auto, #color
-            firefox: false,
-            apple: true,
             regular: true,
-            firefoxRound: false,
-            firefoxManifest: "",
-            androidHomescreen: false,
-            androidIcons : false,
             indent: "\t",
             timestamp: false,
             truncateHTML: false,
 
-            pwa: true,
+            browserTabColor: false, // #color
+
+            HTMLPrefix: "",
+
+            apple: true,
+            appleTouchBackgroundColor: "auto", // none, auto, #color
+            appleTouchPadding: 15,
+
+
+            windowsTile: true,
+            tileBlackWhite: true,
+            tileColor: "auto", // none, auto, #color
+
+            coast: false,
+
+            firefox: false,
+            firefoxRound: false,
+            firefoxManifest: "",
+
+            androidHomescreen: false,
+            androidIcons : false,
+
+            pwa: false,
             pwaManifest: "",
             getLowResolutionImagePath: function (srcFilePath, size) {
                 var extname = path.extname(srcFilePath);
@@ -130,6 +140,8 @@ module.exports = function(grunt) {
                     var name = $(this).attr('name');
                     if(name && (name === 'msapplication-TileImage' ||
                                 name === 'msapplication-TileColor' ||
+	                            name === 'msapplication-navbutton-color' ||
+                                name === 'theme-color' ||
                                 name === 'mobile-web-app-capable' ||
                                 name.indexOf('msapplication-square') >= 0)) {
                         $(this).remove();
@@ -279,9 +291,9 @@ module.exports = function(grunt) {
                 // Android Icons app
                 if (options.androidIcons) {
                     // 36x36: LDPI
-                    grunt.log.write('android-icons-36x36.png... ');
+                    /*grunt.log.write('android-icons-36x36.png... ');
                     convert(combine(source, f.dest, "36x36", "android-icons-36x36.png", additionalOpts));
-                    grunt.log.ok();
+                    grunt.log.ok();*/
 
                     // 48x48: MDPI
                     grunt.log.write('android-icons-48x48.png... ');
@@ -294,9 +306,19 @@ module.exports = function(grunt) {
                     grunt.log.ok();
 
                     // 96x96: XHDPI
-                    grunt.log.write('android-icons-96x96.png... ');
-                    convert(combine(source, f.dest, "96x96", "android-icons-96x96.png", additionalOpts));
-                    grunt.log.ok();
+	                grunt.log.write('android-icons-96x96.png... ');
+	                convert(combine(source, f.dest, "96x96", "android-icons-96x96.png", additionalOpts));
+	                grunt.log.ok();
+
+	                // 144x144 XXHDPI
+	                grunt.log.write('android-icons-144x144.png... ');
+	                convert(combine(source, f.dest, "144x144", "android-icons-144x144.png", additionalOpts));
+	                grunt.log.ok();
+
+	                // 192x192 XXXHDPI
+	                grunt.log.write('android-icons-192x192.png... ');
+	                convert(combine(source, f.dest, "192x192", "android-icons-192x192.png", additionalOpts));
+	                grunt.log.ok();
                 }
 
                 // Firefox
@@ -438,6 +460,10 @@ module.exports = function(grunt) {
 
                     var elements = "";
 
+                    if (options.browserTabColor){
+	                    elements += options.indent + "<meta name=\"theme-color\" content=\"" + options.browserTabColor + "\"/>\n";
+                    }
+
                     if (options.windowsTile) {
                         elements += options.indent + "<meta name=\"msapplication-square70x70logo\" content=\"" + options.HTMLPrefix + "windows-tile-70x70.png" + (options.timestamp ? timestamp : '') + "\"/>\n";
                         elements += options.indent + "<meta name=\"msapplication-square150x150logo\" content=\"" + options.HTMLPrefix + "windows-tile-150x150.png" + (options.timestamp ? timestamp : '') + "\"/>\n";
@@ -445,22 +471,23 @@ module.exports = function(grunt) {
                         elements += options.indent + "<meta name=\"msapplication-TileImage\" content=\"" + options.HTMLPrefix + "windows-tile-144x144.png" + (options.timestamp ? timestamp : '') + "\"/>\n";
                         if (options.tileColor !== "none") {
                             elements += options.indent + "<meta name=\"msapplication-TileColor\" content=\"" + options.tileColor + "\"/>\n";
+	                        elements += options.indent + "<meta name=\"msapplication-navbutton-color\" content=\"" + options.tileColor + "\"/>\n";
                         }
                     }
 
                     // iOS
                     if (options.apple) {
-                        elements += options.indent + "<link rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"" + options.HTMLPrefix + "apple-touch-icon-152x152-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
-                        elements += options.indent + "<link rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"" + options.HTMLPrefix + "apple-touch-icon-120x120-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
+	                    elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" href=\"" + options.HTMLPrefix + "apple-touch-icon-180x180-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
+                        elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"57x57\" href=\"" + options.HTMLPrefix + "apple-touch-icon.png" + (options.timestamp ? timestamp : '') + "\">\n";
+                        elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"60x60\" href=\"" + options.HTMLPrefix + "apple-touch-icon-60x60-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
+                        //as of ios7 not needed: elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"72x72\" href=\"" + options.HTMLPrefix + "apple-touch-icon-72x72" + prefix + ".png" + (options.timestamp ? timestamp : '') + "\">\n";
+                        elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"76x76\" href=\"" + options.HTMLPrefix + "apple-touch-icon-76x76-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
+                        //as of ios7 not needed: elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"114x114\" href=\"" + options.HTMLPrefix + "apple-touch-icon-114x114" + prefix + ".png" + (options.timestamp ? timestamp : '') + "\">\n";
+                        elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"120x120\" href=\"" + options.HTMLPrefix + "apple-touch-icon-120x120-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
+                        //as of ios7 not needed: elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"144x144\" href=\"" + options.HTMLPrefix + "apple-touch-icon-144x144" + prefix + ".png" + (options.timestamp ? timestamp : '') + "\">\n";
+                        elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"152x152\" href=\"" + options.HTMLPrefix + "apple-touch-icon-152x152-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
+	                    elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"180x180\" href=\"" + options.HTMLPrefix + "apple-touch-icon-180x180-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
 
-                        elements += options.indent + "<link rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"" + options.HTMLPrefix + "apple-touch-icon-76x76-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
-                        elements += options.indent + "<link rel=\"apple-touch-icon\" sizes=\"60x60\" href=\"" + options.HTMLPrefix + "apple-touch-icon-60x60-precomposed.png" + (options.timestamp ? timestamp : '') + "\">\n";
-
-                        elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"144x144\" href=\"" + options.HTMLPrefix + "apple-touch-icon-144x144" + prefix + ".png" + (options.timestamp ? timestamp : '') + "\">\n";
-                        elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"114x114\" href=\"" + options.HTMLPrefix + "apple-touch-icon-114x114" + prefix + ".png" + (options.timestamp ? timestamp : '') + "\">\n";
-
-                        elements += options.indent + "<link rel=\"apple-touch-icon" + prefix + "\" sizes=\"72x72\" href=\"" + options.HTMLPrefix + "apple-touch-icon-72x72" + prefix + ".png" + (options.timestamp ? timestamp : '') + "\">\n";
-                        elements += options.indent + "<link rel=\"apple-touch-icon\" sizes=\"57x57\" href=\"" + options.HTMLPrefix + "apple-touch-icon.png" + (options.timestamp ? timestamp : '') + "\">\n";
                     }
 
                     // Coast browser

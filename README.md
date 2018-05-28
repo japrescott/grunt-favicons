@@ -1,11 +1,13 @@
 # grunt-favicons
 
-Clone of gleeros excellent grunt-favicons project!
-Includes multiple improvements;
-- (new) iphonePlus support
+This is a clone of gleeros excellent [grunt-favicons](https://github.com/gleero/grunt-favicons) project!
+
+This fork includes multiple improvements;
 - (new) progressive web application (pwa) icon generation & manifest writing
+- (new) iphone6Plus support (180x180)
+- (fix) prevent multiple mobile-web-app-capable meta tags
 - (fix) svg transparency
-- (fix) no 'false' values in icons.html
+- (fix) indent can be false (defaults to '')
 - (fix) typo in meta tag causing validation errors
 
 
@@ -138,6 +140,12 @@ Type: `Float`
 Default value: `0`
 
 Adaptively sharpen pixels. Increase effect near edges. 0 — disable.
+
+#### options.browserTabColor
+Type: `String`
+Default value: ''
+
+set color of the browsers tab when switching through tabs (Android, FirefoxOS, Opera)
 
 #### options.precomposed
 Type: `Boolean`
