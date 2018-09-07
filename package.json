@@ -1,8 +1,8 @@
 {
   "name": "grunt-favicons",
   "description": "Generate favicon.ico and icons for iOS, Android, Windows, Firefox (OS) and Progressive Web Applications (PWA)",
-  "version": "0.9.1",
-  "homepage": "https://github.com/gleero/grunt-favicons",
+  "version": "1.0.0",
+  "homepage": "https://github.com/japrescott/grunt-favicons",
   "author": {
     "name": "Vladimir Perekladov",
     "email": "gleero@gmail.com",
