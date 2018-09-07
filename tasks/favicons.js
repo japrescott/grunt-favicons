@@ -71,7 +71,7 @@ module.exports = function(grunt) {
         var convert = function(args) {
             args.unshift("convert");
             var ret = execute(args.join(" "));
-            if (ret.code === 127 ) {
+            if ( ret.code === 127 || ret.status === 127 ) {
                 return grunt.warn(
                     'You need to have ImageMagick installed in your PATH for this task to work.'
                 );
@@ -332,7 +332,7 @@ module.exports = function(grunt) {
                         contentFirefox.icons = {};
                     }
 
-                    ['16', '30', '32', '48', '60', '64', '90', '120', '128', '256'].forEach(function(size) {
+                    ['16', '30', '32', '48', '60', '64', '90', '120', '128', '256', '512'].forEach(function(size) {
                         var dimensions = size + 'x' + size;
                         var dhalf = "circle "+size/2+","+size/2+" "+size/2+",1";
                         var fifname = "firefox-icon-" + dimensions + ".png";
@@ -537,7 +537,9 @@ module.exports = function(grunt) {
                 // Cleanup
                 /*if (options.regular) {
                     ['16x16', '32x32', '48x48'].forEach(function(size) {
-                        fs.unlinkSync(path.join(f.dest, size + '.png'));
+                        fs.unlinkSync(path.join(f.dest, size + '.png'), function(error) {
+                          grunt.fail.warn(error)
+                        });
                     });
                 }*/
 

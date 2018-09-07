@@ -5,6 +5,7 @@ This is a clone of gleeros excellent [grunt-favicons](https://github.com/gleero/
 This fork includes multiple improvements;
 - (new) progressive web application (pwa) icon generation & manifest writing
 - (new) iphone6Plus support (180x180)
+- (new) firefox (512x512x)
 - (fix) prevent multiple mobile-web-app-capable meta tags
 - (fix) svg transparency
 - (fix) indent can be false (defaults to '')
@@ -41,6 +42,7 @@ Generates all known types and sizes icons from PNG image. Uses ImageMagick.
 - `firefox-icon-120x120.png` (120x120) - Firefox OS;
 - `firefox-icon-128x128.png` (128x128) - Firefox on Android / Windows;
 - `firefox-icon-256x256.png` (256x256) - Firefox on Android / Windows;
+- `firefox-icon-512x512.png` (256x256) - Firefox on Android / Windows;
 - `homescreen-192x192.png` (192x192) - Android Homescreen.
 
 Adds changes to `html` file.
