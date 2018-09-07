@@ -193,7 +193,7 @@ module.exports = function(grunt) {
                     // regular png
                     ['16x16', '32x32', '48x48'].forEach(function(size) {
                         var lowResolutionImagePath = options.getLowResolutionImagePath(source, size);
-                        var saveTo = path.join(f.dest, size + '.png');
+                        var saveTo = path.join(f.dest, 'favicon-' + size + '.png');
                         var src = source;
                         if (fs.existsSync(lowResolutionImagePath)) {
                             src = lowResolutionImagePath;
@@ -457,11 +457,31 @@ module.exports = function(grunt) {
 	                options.indent = options.indent || ''; // default to '' incase false was passed
 
                     var timestamp = '?ts=' + new Date().getTime().toString();
-
+                    
                     var elements = "";
 
+                    // Default
+                    if (options.regular) {
+                        elements += options.indent + "<link rel=\"shortcut icon\" href=\"" + options.HTMLPrefix + "favicon.ico" + (options.timestamp ? timestamp : '') + "\" />\n";
+                        elements += options.indent + "<link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"" + options.HTMLPrefix + "favicon-16x16.png" + (options.timestamp ? timestamp : '') + "\" />\n";
+                        elements += options.indent + "<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"" + options.HTMLPrefix + "favicon-32x32.png" + (options.timestamp ? timestamp : '') + "\" />\n";
+                        elements += options.indent + "<link rel=\"icon\" type=\"image/png\" sizes=\"48x48\" href=\"" + options.HTMLPrefix + "favicon-48x48.png" + (options.timestamp ? timestamp : '') + "\" />\n";
+                        elements += options.indent + "<link rel=\"icon\" type=\"image/png\" sizes=\"64x64\" href=\"" + options.HTMLPrefix + "favicon.png" + (options.timestamp ? timestamp : '') + "\" />\n";
+                    }
+                    
+                    // Android Homescreen app
+                    if (options.androidHomescreen) {
+                        elements += options.indent + "<meta name=\"mobile-web-app-capable\" content=\"yes\" />\n";
+                        elements += options.indent + "<link rel=\"icon\" sizes=\"192x192\" href=\"" + options.HTMLPrefix + "homescreen-192x192.png" + (options.timestamp ? timestamp : '') + "\" />\n";
+                    }
+
+                    // Coast browser
+                    if (options.coast) {
+                      elements += options.indent + "<link rel=\"icon\" sizes=\"228x228\" href=\"" + options.HTMLPrefix + "coast-icon-228x228.png" + (options.timestamp ? timestamp : '') + "\" />\n";
+                    }
+                    
                     if (options.browserTabColor){
-	                    elements += options.indent + "<meta name=\"theme-color\" content=\"" + options.browserTabColor + "\"/>\n";
+                        elements += options.indent + "<meta name=\"theme-color\" content=\"" + options.browserTabColor + "\"/>\n";
                     }
 
                     if (options.windowsTile) {
@@ -490,22 +510,8 @@ module.exports = function(grunt) {
 
                     }
 
-                    // Coast browser
-                    if (options.coast) {
-                      elements += options.indent + "<link rel=\"icon\" sizes=\"228x228\" href=\"" + options.HTMLPrefix + "coast-icon-228x228.png" + (options.timestamp ? timestamp : '') + "\" />\n";
-                    }
-
-                    // Android Homescreen app
-                    if (options.androidHomescreen) {
-                      elements += options.indent + "<meta name=\"mobile-web-app-capable\" content=\"yes\" />\n";
-                      elements += options.indent + "<link rel=\"icon\" sizes=\"192x192\" href=\"" + options.HTMLPrefix + "homescreen-192x192.png" + (options.timestamp ? timestamp : '') + "\" />\n";
-                    }
-
-                    // Default
-                    if (options.regular) {
-                        elements += options.indent + "<link rel=\"shortcut icon\" href=\"" + options.HTMLPrefix + "favicon.ico" + (options.timestamp ? timestamp : '') + "\" />\n";
-                        elements += options.indent + "<link rel=\"icon\" type=\"image/png\" sizes=\"64x64\" href=\"" + options.HTMLPrefix + "favicon.png" + (options.timestamp ? timestamp : '') + "\" />\n";
-                    }
+                    
+                    
 
                     // Windows 8 tile. In HTML version background color will be as meta-tag
 
@@ -529,11 +535,11 @@ module.exports = function(grunt) {
                 }
 
                 // Cleanup
-                if (options.regular) {
+                /*if (options.regular) {
                     ['16x16', '32x32', '48x48'].forEach(function(size) {
                         fs.unlinkSync(path.join(f.dest, size + '.png'));
                     });
-                }
+                }*/
 
             });
 
