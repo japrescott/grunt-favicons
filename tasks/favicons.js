@@ -2,23 +2,23 @@
  * grunt-favicons
  * https://github.com/gleero/grunt-favicons
  *
+ * Copyright (c) 2018 Jeremy A. Prescott
  * Copyright (c) 2013 Vladimir Perekladov
  * Licensed under the MIT license.
  */
 
-var path = require('path');
-var fs = require('fs');
-var exec = require("sync-exec");
+const path = require('path');
+const fs = require('fs');
+const cheerio = require("cheerio");
+const { execSync } = require('child_process');
 
 module.exports = function(grunt) {
 
     // Tasks
     grunt.registerMultiTask('favicons', 'Generate favicon.ico and icons for iOS, Android, WP8 and Firefox (OS)', function() {
 
-        var target = this.target;
-
         // Default options
-        var options = this.options({
+        const options = this.options({
             debug: false,
 
             trueColor: false,
@@ -60,17 +60,17 @@ module.exports = function(grunt) {
         });
 
         // Execute external command
-        var execute = function(cmd) {
+        const execute = function(cmd) {
             if (options.debug) {
                 console.log("\n\033[37m" + cmd + "\033[0m");
             }
-            return exec(cmd);
+            return execSync(cmd);
         };
 
         // Convert image with imagemagick
-        var convert = function(args) {
+        const convert = function(args) {
             args.unshift("convert");
-            var ret = execute(args.join(" "));
+            const ret = execute(args.join(" "));
             if ( ret.code === 127 || ret.status === 127 ) {
                 return grunt.warn(
                     'You need to have ImageMagick installed in your PATH for this task to work.'
@@ -79,18 +79,18 @@ module.exports = function(grunt) {
         };
 
         // Generate background color for apple touch icons
-        var generateColor = function(src) {
-            var ret = execute("convert " + src + " -polaroid 180 -resize 1x1 -colors 1 -alpha off -unique-colors txt:- | grep -v ImageMagick | sed -n 's/.*\\(#[0-9A-F]*\\).*/\\1/p'");
+        const generateColor = function(src) {
+            const ret = execute("convert " + src + " -polaroid 180 -resize 1x1 -colors 1 -alpha off -unique-colors txt:- | grep -v ImageMagick | sed -n 's/.*\\(#[0-9A-F]*\\).*/\\1/p'");
             return ret.stdout.trim();
         };
 
         // Generate background color for windows 8 tile
-        var generateTileColor = function(src) {
-            var ret = execute("convert " + src + " +dither -colors 1 -alpha off -unique-colors txt:- | grep -v ImageMagick | sed -n 's/.*\\(#[0-9A-F]*\\).*/\\1/p'");
+        const generateTileColor = function(src) {
+            const ret = execute("convert " + src + " +dither -colors 1 -alpha off -unique-colors txt:- | grep -v ImageMagick | sed -n 's/.*\\(#[0-9A-F]*\\).*/\\1/p'");
             return ret.stdout.trim();
         };
 
-        var combine = function(src, dest, size, fname, additionalOpts, padding) {
+        const combine = function(src, dest, size, fname, additionalOpts, padding) {
             var out = [
                 src,
                 "-resize",
@@ -122,13 +122,12 @@ module.exports = function(grunt) {
 
 
         // Append all icons to HTML as meta tags (needs cheerio)
-        var needHTML = options.html !== undefined && options.html !== "";
+        let needHTML = options.html !== undefined && options.html !== "";
 
         if (needHTML) {
-            var html = '';
-            var cheerio = require("cheerio");
-            var contents = (grunt.file.exists(options.html)) ? grunt.file.read(options.html) : "";
-            var $;
+            let html = '';
+            let contents = (grunt.file.exists(options.html)) ? grunt.file.read(options.html) : "";
+            let $;
             if (contents !== "" && !options.truncateHTML) {
                 $ = cheerio.load(contents);
                 // Removing exists favicon from HTML
@@ -137,7 +136,7 @@ module.exports = function(grunt) {
                 $('link[rel="apple-touch-icon"]').remove();
                 $('link[rel="apple-touch-icon-precomposed"]').remove();
                 $('meta').each(function(i, elem) {
-                    var name = $(this).attr('name');
+                    const name = $(this).attr('name');
                     if(name && (name === 'msapplication-TileImage' ||
                                 name === 'msapplication-TileColor' ||
 	                            name === 'msapplication-navbutton-color' ||
@@ -147,7 +146,7 @@ module.exports = function(grunt) {
                         $(this).remove();
                     }
                 });
-                 html = $.html().replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g,'').replace(/\s+/g,' ');
+                html = $.html().replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g,'').replace(/\s+/g,' ');
             }
             if(html === '') {
                 $ = cheerio.load('');
@@ -168,8 +167,6 @@ module.exports = function(grunt) {
 
             // Iterate source files
             f.src.forEach(function(source) {
-
-                var resolmap = {};
 
                 // Create resized version of source image
                 // 16x16: desktop browsers, address bar, tabs
