@@ -4,4 +4,5 @@ npm-debug.log
 tmp
 test/out
 .DS_Store
+package-lock.json
 
