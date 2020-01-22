@@ -143,6 +143,24 @@ exports.favicons = {
         test.done();
     },
 
+
+    // apple-touch-icon-180x180-precomposed.png exists
+    ati180Exists: function(test) {
+        test.expect(1);
+        var exists = fs.existsSync(path + "/apple-touch-icon-180x180-precomposed.png");
+        test.ok(exists, 'apple-touch-icon-180x180-precomposed.png does not exist.');
+        test.done();
+    },
+
+    // apple-touch-icon-180x180-precomposed.png dimensions
+    ati180Dim: function(test) {
+        test.expect(1);
+        var dimensions = sizeOf(path + "/apple-touch-icon-180x180-precomposed.png");
+        var pass = dimensions.width === 180 && dimensions.height === 180;
+        test.ok(pass, 'apple-touch-icon-180x180-precomposed.png is not 180x180.');
+        test.done();
+    },
+
     // windows-tile-144x144.png exists
     wt144Exists: function(test) {
         test.expect(1);

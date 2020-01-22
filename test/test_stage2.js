@@ -297,6 +297,23 @@ exports.favicons = {
         test.done();
     },
 
+    // firefox-icon-512x512.png exists
+    fx512Exists: function(test) {
+        test.expect(1);
+        var exists = fs.existsSync(path + "/firefox-icon-512x512.png");
+        test.ok(exists, 'firefox-icon-512x512.png does not exist.');
+        test.done();
+    },
+
+    // firefox-icon-512x512.png dimensions
+    fx512Dim: function(test) {
+        test.expect(1);
+        var dimensions = sizeOf(path + "/firefox-icon-512x512.png");
+        var pass = dimensions.width === 512 && dimensions.height === 512;
+        test.ok(pass, 'firefox-icon-512x512.png is not 512x512.');
+        test.done();
+    },
+
     // homescreen-192x192.png exists
     ah192Exists: function(test) {
         test.expect(1);
@@ -318,7 +335,7 @@ exports.favicons = {
     manifestsum: function(test) {
         test.expect(1);
         var original = crypto.createHash('sha1').update(grunt.file.read(path + '/manifest.webapp')).digest('hex');
-        test.ok(original === '48a62081fee8bd4721f4b164bf8c5d36dd044d41', 'firefox manifest hashsum not valid');
+        test.ok(original === '7b61b2f83a7451fcac9081891c394f0aa2fd8d13', 'firefox manifest hashsum not valid');
         test.done();
     },
 
@@ -326,7 +343,7 @@ exports.favicons = {
     htmlsum: function(test) {
         test.expect(1);
         var original = crypto.createHash('sha1').update(grunt.file.read(path + '/test.html')).digest('hex');
-        test.ok(original === '3de4a21225e96816a33312eb1172331257ac2837', 'html hashsum not valid');
+        test.ok(original === '9540ba95bf1cf29bcc86742335e437eb24c7fab2', 'html hashsum not valid');
         test.done();
     }
 

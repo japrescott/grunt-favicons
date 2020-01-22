@@ -47,7 +47,7 @@ exports.favicons = {
             }
         });
 
-        test.ok(linkIcon === 5, 'link msapplication icons length shount be 5; but is ' + linkIcon);
+        test.ok(linkIcon === 6, 'link msapplication icons length shount be 5; but is ' + linkIcon);
         test.done();
     }
 };

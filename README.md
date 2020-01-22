@@ -338,7 +338,26 @@ Big thanks for contributing:
 
 ## Release History
 
+### 2020-01-22 v1.x.x
+* [#2](https://github.com/japrescott/grunt-favicons/issues/2) Fix regression of using execSync
+* fix & update tests
 
+### 2020-01-08 v1.x.x
+* security: update all dependencies and use node's execSync
+* fix readme
+
+### ~2018 - ~2019 v1.x.x
+* (new) progressive web application (pwa) icon generation & manifest writing
+* (new) iphone6Plus support (180x180)
+* (new) firefox (512x512x)
+* (fix) prevent multiple mobile-web-app-capable meta tags
+* (fix) svg transparency
+* (fix) indent can be false (defaults to '')
+* (fix) typo in meta tag causing validation errors
+
+
+
+## Release History by gleero ([gleero.com](http://gleero.com/))
 ### 2014-04-18 v0.6.4
 
 * [#28](https://github.com/gleero/grunt-favicons/issues/28) Add Android Homescreen app icon.
