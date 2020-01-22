@@ -80,14 +80,14 @@ module.exports = function(grunt) {
 
         // Generate background color for apple touch icons
         const generateColor = function(src) {
-            const ret = execute("convert " + src + " -polaroid 180 -resize 1x1 -colors 1 -alpha off -unique-colors txt:- | grep -v ImageMagick | sed -n 's/.*\\(#[0-9A-F]*\\).*/\\1/p'");
-            return ret.stdout.trim();
+            const ret = execute("convert " + src + " -polaroid 180 -resize 1x1 -colors 1 -alpha off -unique-colors txt:- | grep -v ImageMagick | sed -n 's/.*\\(#[0-9A-F]*\\).*/\\1/p'", {'encoding': 'utf8'});
+            return ret.toString().trim();
         };
 
         // Generate background color for windows 8 tile
         const generateTileColor = function(src) {
             const ret = execute("convert " + src + " +dither -colors 1 -alpha off -unique-colors txt:- | grep -v ImageMagick | sed -n 's/.*\\(#[0-9A-F]*\\).*/\\1/p'");
-            return ret.stdout.trim();
+            return ret.toString().trim();
         };
 
         const combine = function(src, dest, size, fname, additionalOpts, padding) {
@@ -124,10 +124,10 @@ module.exports = function(grunt) {
         // Append all icons to HTML as meta tags (needs cheerio)
         let needHTML = options.html !== undefined && options.html !== "";
 
+        let $;
         if (needHTML) {
             let html = '';
             let contents = (grunt.file.exists(options.html)) ? grunt.file.read(options.html) : "";
-            let $;
             if (contents !== "" && !options.truncateHTML) {
                 $ = cheerio.load(contents);
                 // Removing exists favicon from HTML
